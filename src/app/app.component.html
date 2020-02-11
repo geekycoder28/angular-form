@@ -1,0 +1,64 @@
+<div class="container">
+
+  <pre id="formData" class="form-value">{{myForm.value | json}}</pre>
+
+  <!-- Little trick to center the inputs to the viewer -->
+    <div class="form-container">
+        <form id="input-form" [formGroup]="myForm" autocomplete="off" novalidate>
+
+        <!-- Cycle through all the inputs -->
+        <div *ngFor="let input of inputList; let i=index" [ngSwitch]="input.type">
+            
+            <input *ngSwitchCase="'checkbox'" 
+                [name]="input.name" 
+                type="checkbox" 
+                [formControlName]="input.name" 
+                [value]="input.value" 
+                [ngStyle]="getInputPosition(input)">
+ 
+            <input *ngSwitchCase="'radio'" 
+                [name]="input.name" 
+                type="radio" 
+                [formControlName]="input.name" 
+                [value]="input.value" 
+                [ngStyle]="getInputPosition(input)">
+
+            <input *ngSwitchCase="'textarea'" 
+                [name]="input.name" 
+                type="textarea"
+                [formControlName]="input.name" 
+                [value]="input.value" 
+                [ngStyle]="getInputPosition(input)" 
+                style="background-color:  red; ">
+ 
+            <!-- Insert an input accordingly and get the style/position from the component -->
+            <input *ngSwitchDefault 
+                [name]="input.name" 
+                type="input" 
+                [formControlName]="input.name" 
+                [value]="input.value" 
+                [ngStyle]="getInputPosition(input)" 
+                style="background-color:  #fffff0;">
+ 
+        </div> 
+ 
+        </form>
+    </div>
+
+    <!-- Bind the zoom variable to the viewer component -->
+    <pdf-viewer id="viewer" [src]=getDocURL() [zoom]="zoom" (after-load-complete)="loadComplete($event)"></pdf-viewer>
+  
+</div>
+
+<table style="width: 100%;">
+    <tr>
+        <td align="center" style="padding: 35px;">
+            <button id="cmdNext" class="myButton" (click)="SaveFormTest()"> Next >> </button>
+        </td>
+    </tr>
+</table> 
+ 
+<!-- Add some button -->
+<button mat-mini-fab (click)="zoomOut()">-</button>
+<button mat-fab (click)="zoomIn()">+</button>
+ 
